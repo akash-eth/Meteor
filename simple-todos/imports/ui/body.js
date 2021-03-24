@@ -11,6 +11,7 @@ import './body.html';
 
 Template.body.onCreated(function bodyOnCreated () {
   this.state = new ReactiveDict();
+  Meteor.subscribe('tasks');
 });
  
 Template.body.helpers({
@@ -36,12 +37,7 @@ Template.body.events({
     const target = event.target;
     const text = target.text.value;
 
-    Task.insert({
-      text,
-      createdAt: new Date(),
-      owner: Meteor.userId(),
-      username: Meteor.user().username,
-    });
+    Meteor.call('task.insert', text);
 
     // clear form !!
     target.text.value = '';
